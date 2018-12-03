@@ -1,5 +1,8 @@
 package com.adidas.service.review.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,13 +10,19 @@ import javax.persistence.Table;
 /**
  * @author Pavel Savinov
  */
+@ApiModel(description = "Product review")
 @Entity
 @Table(name = "Review")
 public class Review {
 
+	@ApiModelProperty(example = "1234PR", notes = "Product ID", required = true)
 	@Id
 	private String productId;
+
+	@ApiModelProperty(example = "10", notes = "Product reviews number", required = true)
 	private Integer reviewsNumber;
+
+	@ApiModelProperty(example = "2.65", notes = "Product average score", required = true)
 	private Double averageScore;
 
 	public String getProductId() {

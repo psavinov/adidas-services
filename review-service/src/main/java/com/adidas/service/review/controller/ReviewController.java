@@ -17,6 +17,11 @@ package com.adidas.service.review.controller;
 import com.adidas.service.review.entity.Review;
 import com.adidas.service.review.exception.NoSuchReviewException;
 import com.adidas.service.review.service.ReviewService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,10 +38,20 @@ import java.util.List;
 /**
  * @author Pavel Savinov
  */
+@Api(value="Review Service API", description="CRUD operations for review service")
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
 
+	@ApiOperation(
+		value = "Add a review",
+		authorizations = {@Authorization(value="basicAuth")}
+	)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Review added successfully"),
+		@ApiResponse(code = 401, message = "You are not authorized to add a review"),
+		@ApiResponse(code = 500, message = "Incorrect review data")
+	})
 	@PostMapping
 	public Review addReview(@RequestBody Review review) {
 		return reviewService.addReview(
@@ -44,11 +59,23 @@ public class ReviewController {
 			review.getAverageScore());
 	}
 
+	@ApiOperation(
+		value = "Delete a review",
+		authorizations = {@Authorization(value="basicAuth")}
+	)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Review deleted successfully"),
+		@ApiResponse(code = 401, message = "You are not authorized to delete a review")
+	})
 	@DeleteMapping(path = "/{productId}")
 	public void deleteReview(@PathVariable String productId) {
 		reviewService.deleteReview(productId);
 	}
 
+	@ApiOperation(value = "Retrieve a review by product ID")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully retrieved review")
+	})
 	@GetMapping(path = "/{productId}")
 	public Review getReview(@PathVariable String productId)
 		throws NoSuchReviewException {
@@ -56,11 +83,24 @@ public class ReviewController {
 		return reviewService.getReviewByProductId(productId);
 	}
 
+	@ApiOperation(value = "Retrieve a list of reviews")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully retrieved list")
+	})
 	@GetMapping
 	public List<Review> getReviews(Pageable pageable) {
 		return reviewService.getReviews(pageable);
 	}
 
+	@ApiOperation(
+		value = "Update a review",
+		authorizations = {@Authorization(value="basicAuth")}
+	)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Review updated successfully"),
+		@ApiResponse(code = 401, message = "You are not authorized to update a review"),
+		@ApiResponse(code = 500, message = "Incorrect review data")
+	})
 	@PutMapping
 	public Review updateReview(@RequestBody Review review)
 		throws NoSuchReviewException {
