@@ -1,6 +1,7 @@
 package com.adidas.service.review.queue;
 
 import com.adidas.service.review.entity.Review;
+import com.adidas.service.review.exception.InvalidReviewException;
 import com.adidas.service.review.exception.NoSuchReviewException;
 import com.adidas.service.review.service.ReviewService;
 import org.slf4j.Logger;
@@ -18,9 +19,14 @@ public class ReviewListener {
 
 	@JmsListener(destination = ActiveMQConfig.ADD_REVIEW_QUEUE)
 	public void receiveAddReviewMessage(@Payload Review review) {
-		reviewService.addReview(
-			review.getProductId(), review.getReviewsNumber(),
-			review.getAverageScore());
+		try {
+			reviewService.addReview(
+				review.getProductId(), review.getReviewsNumber(),
+				review.getAverageScore());
+		}
+		catch(InvalidReviewException ire) {
+			logger.error(ire.getMessage());
+		}
 	}
 
 	@JmsListener(destination = ActiveMQConfig.DELETE_REVIEW_QUEUE)
@@ -40,6 +46,9 @@ public class ReviewListener {
 				logger.debug(
 					"Updating review that doesn't exist: " + review.toString());
 			}
+		}
+		catch (InvalidReviewException ire) {
+			logger.error(ire.getMessage());
 		}
 	}
 

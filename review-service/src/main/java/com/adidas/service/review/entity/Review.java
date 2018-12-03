@@ -26,6 +26,16 @@ public class Review implements Serializable {
 	@ApiModelProperty(example = "2.65", notes = "Product average score", required = true)
 	private Double averageScore;
 
+	public Review() {}
+
+	public Review(
+		String productId, Integer reviewsNumber, Double averageScore) {
+
+		setProductId(productId);
+		setReviewsNumber(reviewsNumber);
+		setAverageScore(averageScore);
+	}
+
 	public String getProductId() {
 		return productId;
 	}

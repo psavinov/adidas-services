@@ -1,6 +1,7 @@
 package com.adidas.service.review.service;
 
 import com.adidas.service.review.entity.Review;
+import com.adidas.service.review.exception.InvalidReviewException;
 import com.adidas.service.review.exception.NoSuchReviewException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface ReviewService {
 
 	public Review addReview(
-		String productId, Integer reviewsNumber, Double averageScore);
+			String productId, Integer reviewsNumber, Double averageScore)
+		throws InvalidReviewException;
 
 	public void deleteReview(String productId);
 
@@ -25,6 +27,6 @@ public interface ReviewService {
 
 	public Review updateReview(
 			String productId, Integer reviewsNumber, Double averageScore)
-		throws NoSuchReviewException;
+		throws NoSuchReviewException, InvalidReviewException;
 
 }

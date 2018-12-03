@@ -2,6 +2,7 @@ package com.adidas.service.review.service.impl;
 
 import com.adidas.service.review.dao.ReviewDao;
 import com.adidas.service.review.entity.Review;
+import com.adidas.service.review.exception.InvalidReviewException;
 import com.adidas.service.review.exception.NoSuchReviewException;
 import com.adidas.service.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Review addReview(
-		String productId, Integer reviewsNumber, Double averageScore) {
+			String productId, Integer reviewsNumber, Double averageScore)
+		throws InvalidReviewException{
 
 		validate(productId, reviewsNumber, averageScore);
 
@@ -56,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public Review updateReview(
 			String productId, Integer reviewsNumber, Double averageScore)
-		throws NoSuchReviewException {
+		throws NoSuchReviewException, InvalidReviewException {
 
 		validate(productId, reviewsNumber, averageScore);
 
@@ -70,21 +72,26 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	private void validate(
-		String productId, Integer reviewsNumber, Double averageScore) {
+			String productId, Integer reviewsNumber, Double averageScore)
+		throws InvalidReviewException {
 
 		if (productId == null || productId.equals("") ||
 			reviewsNumber == null || averageScore == null) {
 
-			throw new IllegalArgumentException("Arguments must be not null");
+			throw new InvalidReviewException(
+				productId, reviewsNumber, averageScore,
+				"Arguments must be not null");
 		}
 
 		if (reviewsNumber <= 0) {
-			throw new IllegalArgumentException(
+			throw new InvalidReviewException(
+				productId, reviewsNumber, averageScore,
 				"Reviews number must be greater than zero");
 		}
 
 		if (averageScore < 0) {
-			throw new IllegalArgumentException(
+			throw new InvalidReviewException(
+				productId, reviewsNumber, averageScore,
 				"Reviews number must be greater or equal to zero");
 		}
 	}
