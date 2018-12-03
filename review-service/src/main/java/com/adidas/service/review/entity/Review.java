@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author Pavel Savinov
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 @ApiModel(description = "Product review")
 @Entity
 @Table(name = "Review")
-public class Review {
+public class Review implements Serializable {
 
 	@ApiModelProperty(example = "1234PR", notes = "Product ID", required = true)
 	@Id

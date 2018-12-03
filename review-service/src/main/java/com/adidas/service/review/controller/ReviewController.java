@@ -16,6 +16,7 @@ package com.adidas.service.review.controller;
 
 import com.adidas.service.review.entity.Review;
 import com.adidas.service.review.exception.NoSuchReviewException;
+import com.adidas.service.review.queue.ActiveMQConfig;
 import com.adidas.service.review.service.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,15 +50,14 @@ public class ReviewController {
 		authorizations = {@Authorization(value="basicAuth")}
 	)
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Review added successfully"),
-		@ApiResponse(code = 401, message = "You are not authorized to add a review"),
-		@ApiResponse(code = 500, message = "Incorrect review data")
+		@ApiResponse(code = 200, message = "Review successfully added to the creation queue"),
+		@ApiResponse(code = 401, message = "You are not authorized to add a review")
 	})
 	@PostMapping
 	public Review addReview(@RequestBody Review review) {
-		return reviewService.addReview(
-			review.getProductId(), review.getReviewsNumber(),
-			review.getAverageScore());
+		jmsTemplate.convertAndSend(ActiveMQConfig.ADD_REVIEW_QUEUE, review);
+
+		return review;
 	}
 
 	@ApiOperation(
@@ -64,12 +65,13 @@ public class ReviewController {
 		authorizations = {@Authorization(value="basicAuth")}
 	)
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Review deleted successfully"),
+		@ApiResponse(code = 200, message = "Review successfully added to the delete queue"),
 		@ApiResponse(code = 401, message = "You are not authorized to delete a review")
 	})
 	@DeleteMapping(path = "/{productId}")
 	public void deleteReview(@PathVariable String productId) {
-		reviewService.deleteReview(productId);
+		jmsTemplate.convertAndSend(
+			ActiveMQConfig.DELETE_REVIEW_QUEUE, productId);
 	}
 
 	@ApiOperation(value = "Retrieve a review by product ID")
@@ -97,18 +99,18 @@ public class ReviewController {
 		authorizations = {@Authorization(value="basicAuth")}
 	)
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Review updated successfully"),
-		@ApiResponse(code = 401, message = "You are not authorized to update a review"),
-		@ApiResponse(code = 500, message = "Incorrect review data")
+		@ApiResponse(code = 200, message = "Review successfully added to the update queue"),
+		@ApiResponse(code = 401, message = "You are not authorized to update a review")
 	})
 	@PutMapping
-	public Review updateReview(@RequestBody Review review)
-		throws NoSuchReviewException {
+	public Review updateReview(@RequestBody Review review) {
+		jmsTemplate.convertAndSend(ActiveMQConfig.UPDATE_REVIEW_QUEUE, review);
 
-		return reviewService.updateReview(
-			review.getProductId(), review.getReviewsNumber(),
-			review.getAverageScore());
+		return review;
 	}
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
 
 	@Autowired
 	private ReviewService reviewService;
