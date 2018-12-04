@@ -14,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
+ * Spring security configuration, defines authentication politics for the
+ * {@link com.adidas.service.review.controller.ReviewController}.
+ *
  * @author Pavel Savinov
  */
 @Configuration

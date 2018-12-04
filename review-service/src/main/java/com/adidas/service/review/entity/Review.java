@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * Review entity model description.
+ *
  * @author Pavel Savinov
  */
 @ApiModel(description = "Product review")

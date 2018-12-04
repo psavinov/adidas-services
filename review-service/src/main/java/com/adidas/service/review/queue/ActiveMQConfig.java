@@ -10,6 +10,9 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
 /**
+ * Message queue configuration, provides a queue and a message converter to
+ * manipulate review messages in JSON format.
+ *
  * @author Pavel Savinov
  */
 @EnableJms
@@ -22,8 +25,11 @@ public class ActiveMQConfig {
 
 	@Bean
 	public JmsListenerContainerFactory<?> queueListenerFactory() {
-		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		DefaultJmsListenerContainerFactory factory =
+			new DefaultJmsListenerContainerFactory();
+
 		factory.setMessageConverter(messageConverter());
+
 		return factory;
 	}
 

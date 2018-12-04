@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Cache configuration. Instantiates a CacheManager bean to store reviews using
+ * in-memory cache.
+ *
  * @author Pavel Savinov
  */
 @Configuration

@@ -12,6 +12,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 /**
+ * Listener to process existing message queues, to add, update and delete
+ * reviews.
+ *
  * @author Pavel Savinov
  */
 @Component

@@ -4,6 +4,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 import org.springframework.stereotype.Component;
 
 /**
+ * {@link BasicAuthenticationEntryPoint} which defines a realm name for the
+ * Review service app.
+ *
  * @author Pavel Savinov
  */
 @Component

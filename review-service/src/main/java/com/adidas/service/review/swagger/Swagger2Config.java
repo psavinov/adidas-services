@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Swagger 2 configuration, to provide API documentation.
+ *
  * @author Pavel Savinov
  */
 @Configuration

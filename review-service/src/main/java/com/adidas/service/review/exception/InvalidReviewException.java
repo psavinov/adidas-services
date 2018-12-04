@@ -3,12 +3,14 @@ package com.adidas.service.review.exception;
 import com.adidas.service.review.entity.Review;
 
 /**
+ * Exception to be thrown when some {@link Review} properties are incorrect.
+ *
  * @author Pavel Savinov
  */
 public class InvalidReviewException extends Exception {
 
 	public InvalidReviewException(String message, Review review) {
-		super(message + review.toString());
+		super(String.format("%s %s", message, review.toString()));
 	}
 
 	public InvalidReviewException(
