@@ -7,4 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProductData
 	extends ConcurrentHashMap<String, Object> implements Data  {
+
+	public ProductData() {}
+
+	public ProductData(String productId) {
+		super();
+
+		put(ProductKeys.id.name(), productId);
+	}
+
 }

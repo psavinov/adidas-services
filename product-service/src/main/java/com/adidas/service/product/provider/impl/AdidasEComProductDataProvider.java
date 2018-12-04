@@ -2,9 +2,14 @@ package com.adidas.service.product.provider.impl;
 
 import com.adidas.service.product.entity.Data;
 import com.adidas.service.product.entity.ProductData;
+import com.adidas.service.product.entity.ProductKeys;
 import com.adidas.service.product.provider.DataProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,9 +17,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author Pavel Savinov
@@ -22,7 +29,8 @@ import java.io.Serializable;
 @Service("adidasECom")
 public class AdidasEComProductDataProvider implements DataProvider {
 
-	@Cacheable("products")
+	@Cacheable(value = "products")
+	@CacheEvict(value = "products", condition = "#result.containsKey('error_message')")
 	@Override
 	public Data getData(Serializable resourceId) {
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
@@ -45,12 +53,37 @@ public class AdidasEComProductDataProvider implements DataProvider {
 
 		HttpEntity entity = new HttpEntity(headers);
 
-		ResponseEntity<ProductData> response = restTemplate.exchange(
-			String.format("%s%s", endpoint, resourceId), HttpMethod.GET, entity,
-			ProductData.class, "");
+		String errorMessage = "Unable to get data from the Adidas ECom service";
 
-		return response.getBody();
+		try {
+			ResponseEntity<ProductData> response = restTemplate.exchange(
+				String.format("%s%s", endpoint, resourceId), HttpMethod.GET,
+				entity,
+				ProductData.class, "");
+
+			return response.getBody();
+		}
+		catch (HttpClientErrorException hcee) {
+			errorMessage = hcee.getStatusText();
+
+			logger.error(errorMessage, hcee);
+		}
+		catch (Exception e) {
+			logger.error(errorMessage, e);
+		}
+
+		ProductData productData = new ProductData(resourceId.toString());
+
+		productData.put(
+			ProductKeys.error_message.name(),
+			errorMessage);
+
+		return productData;
 	}
+
+	private Logger logger = LoggerFactory.getLogger(
+		AdidasEComProductDataProvider.class);
+
 
 	@Value("${adidas.ecom.endpoint}")
 	private String endpoint;
