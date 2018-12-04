@@ -4,9 +4,11 @@ import com.adidas.service.product.entity.Data;
 import com.adidas.service.product.entity.ProductKeys;
 import com.adidas.service.product.entity.ReviewData;
 import com.adidas.service.product.provider.DataProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +24,13 @@ public class ReviewDataProvider implements DataProvider {
 
 	@Override
 	public Data getData(Serializable resourceId) {
-		RestTemplate restTemplate = new RestTemplate();
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+			new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+
+		clientHttpRequestFactory.setReadTimeout(250);
+
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 
 		Map<String, Object> map = new HashMap<>();
 

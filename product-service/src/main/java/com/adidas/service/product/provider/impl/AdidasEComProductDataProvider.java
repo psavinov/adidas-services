@@ -37,6 +37,8 @@ public class AdidasEComProductDataProvider implements DataProvider {
 			new HttpComponentsClientHttpRequestFactory(
 				HttpClientBuilder.create().build());
 
+		clientHttpRequestFactory.setReadTimeout(200);
+
 		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 
 		HttpHeaders headers = new HttpHeaders();
