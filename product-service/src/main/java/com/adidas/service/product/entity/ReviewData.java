@@ -3,6 +3,9 @@ package com.adidas.service.product.entity;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Implementation of {@link Data} which represents a review data based on the
+ * Reviews service response.
+ *
  * @author Pavel Savinov
  */
 public class ReviewData

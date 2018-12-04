@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Implementation of {@link DataProvider} which gets reviews data from the
+ * Reviews service by product ID.
+ *
  * @author Pavel Savinov
  */
 @Service("review")

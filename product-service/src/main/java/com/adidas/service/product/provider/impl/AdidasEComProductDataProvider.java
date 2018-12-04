@@ -4,7 +4,6 @@ import com.adidas.service.product.entity.Data;
 import com.adidas.service.product.entity.ProductData;
 import com.adidas.service.product.entity.ProductKeys;
 import com.adidas.service.product.provider.DataProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +20,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
+ * Implementation of {@link DataProvider} which gets product data from Adidas
+ * ECom API by product ID.
+ *
  * @author Pavel Savinov
  */
 @Service("adidasECom")

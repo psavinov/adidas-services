@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Basic product representation based on the Adidas ECom API response
+ * structure and Reviews service response.
+ *
  * @author Pavel Savinov
  */
 @ApiModel("Product description")

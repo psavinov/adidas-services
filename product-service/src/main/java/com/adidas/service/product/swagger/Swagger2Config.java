@@ -16,6 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
+ * Swagger REST API configuration.
+ *
  * @author Pavel Savinov
  */
 @Configuration

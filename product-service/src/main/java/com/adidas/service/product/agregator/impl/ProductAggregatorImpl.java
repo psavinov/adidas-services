@@ -7,6 +7,8 @@ import com.adidas.service.product.entity.ProductKeys;
 import org.springframework.stereotype.Service;
 
 /**
+ * Basic product aggregator ({@link ProductAggregator}) implementation.
+ *
  * @author Pavel Savinov
  */
 @Service

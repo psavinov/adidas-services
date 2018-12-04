@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Product REST controller.
+ *
  * @author Pavel Savinov
  */
 @Api(value="Product Service API", description="Product Service REST Endpoint")

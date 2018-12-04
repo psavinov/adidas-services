@@ -3,6 +3,8 @@ package com.adidas.service.product.entity;
 import java.util.Arrays;
 
 /**
+ * Available {@link Product} data keys.
+ *
  * @author Pavel Savinov
  */
 public enum ProductKeys {

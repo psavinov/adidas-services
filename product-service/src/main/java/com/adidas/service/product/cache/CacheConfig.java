@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Cache config for {@link com.adidas.service.product.entity.Product} instances.
+ *
  * @author Pavel Savinov
  */
 @Configuration
