@@ -8,10 +8,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,48 +27,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author Pavel Savinov
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(ReviewController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ReviewControllerTest {
-
-	@Before
-	public void setUp() throws Exception {
-		Review review = new Review();
-
-		review.setProductId("1234PR");
-		review.setReviewsNumber(5);
-		review.setAverageScore(2.56);
-
-		Mockito.when(reviewService.addReview("1234PR", 5, 2.56))
-			.thenReturn(review);
-
-		Mockito.when(reviewService.updateReview("1234PR", 5, 2.56))
-			.thenReturn(review);
-
-		Mockito.when(reviewService.getReviewByProductId("1234PR"))
-			.thenReturn(review);
-
-		Mockito.when(reviewService.getReviews(PageRequest.of(0, 20)))
-			.thenReturn(Collections.singletonList(review));
-	}
 
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockBean
-	private ReviewService reviewService;
-
-	@MockBean
-	private AuthenticationEntryPoint authenticationEntryPoint;
-
 	private ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
+	@WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
 	public void testAddReview() throws Exception {
 		Map<String, Object> review = new HashMap<>();
 
@@ -84,12 +63,12 @@ public class ReviewControllerTest {
 	public void testGetReview() throws Exception {
 		Map<String, Object> review = new HashMap<>();
 
-		review.put("productId", "1234PR");
-		review.put("reviewsNumber", 5);
-		review.put("averageScore", 2.56);
+		review.put("productId", "BB5476");
+		review.put("reviewsNumber", 65);
+		review.put("averageScore", 4.12);
 
 		this.mockMvc.perform(
-			get("/review/1234PR")
+			get("/review/BB5476")
 		).andExpect(content().json(objectMapper.writeValueAsString(review)));
 	}
 
@@ -97,23 +76,22 @@ public class ReviewControllerTest {
 	public void testGetReviews() throws Exception {
 		Map<String, Object> review = new HashMap<>();
 
-		review.put("productId", "1234PR");
-		review.put("reviewsNumber", 5);
-		review.put("averageScore", 2.56);
+		review.put("productId", "BB5476");
+		review.put("reviewsNumber", 65);
+		review.put("averageScore", 4.12);
 
 		this.mockMvc.perform(
 			get("/review")
-		).andExpect(content().json(
-			objectMapper.writeValueAsString(
-				Collections.singletonList(review))));
+		).andExpect(jsonPath("$.length()").value(6));
 	}
 
 	@Test
+	@WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
 	public void testUpdateReview() throws Exception {
 		Map<String, Object> review = new HashMap<>();
 
 		review.put("productId", "1234PR");
-		review.put("reviewsNumber", -1);
+		review.put("reviewsNumber", 5);
 		review.put("averageScore", 2.56);
 
 		this.mockMvc.perform(
