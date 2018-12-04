@@ -5,6 +5,7 @@ import com.adidas.service.product.entity.ProductData;
 import com.adidas.service.product.provider.DataProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Service("adidasECom")
 public class AdidasEComProductDataProvider implements DataProvider {
 
+	@Cacheable("products")
 	@Override
 	public Data getData(Serializable resourceId) {
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
