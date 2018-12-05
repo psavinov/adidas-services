@@ -45,6 +45,22 @@ public interface ReviewService {
 	public List<Review> getReviews(Pageable pageable);
 
 	/**
+	 * Gets a list of available Review instances which product ID starts with
+	 * specified parameter.
+	 *
+	 * @param productIdPart
+	 * @return List of Review instances.
+	 */
+	public List<Review> getReviews(String productIdPart);
+
+	/**
+	 * Gets a number of Review instances in the database.
+	 *
+	 * @return Number of reviews.
+	 */
+	public long getReviewsCount();
+
+	/**
 	 * Get a Review by product ID. Cached.
 	 *
 	 * @param productId Product ID

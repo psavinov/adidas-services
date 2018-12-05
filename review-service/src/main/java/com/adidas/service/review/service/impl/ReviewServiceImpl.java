@@ -48,6 +48,16 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
+	public List<Review> getReviews(String productIdPart) {
+		return reviewDao.findReviewsByProductIdLike(productIdPart);
+	}
+
+	@Override
+	public long getReviewsCount() {
+		return reviewDao.count();
+	}
+
+	@Override
 	public Review getReviewByProductId(String productId)
 		throws NoSuchReviewException {
 
