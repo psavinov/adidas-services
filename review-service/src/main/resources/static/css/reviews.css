@@ -1,0 +1,49 @@
+h4, h5 {
+	margin-bottom: 20px;
+	color: #aaaaaa;
+}
+
+.main-div {
+	margin: 100px auto;
+	text-align: center;
+	width: 640px;
+}
+
+.product-id {
+	background-color: aliceblue;
+	border: 1px solid black;
+	border-radius: 5px;
+	color: navy;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 4px;
+	width: 60%;
+}
+
+.hide {
+	display: none;
+}
+
+.review-div {
+	border: 1px dashed navy;
+	margin-top: 30px;
+	padding: 15px;
+	text-align: center;
+}
+
+#createReviewButton {
+	background: beige;
+	border: 1px solid cornflowerblue;
+	border-radius: 5px;
+	color: brown;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 4px;
+	width: 20%;
+}
+
+#createReviewButton:hover {
+	background-color: bisque;
+	border: 1px solid darkcyan;
+}
