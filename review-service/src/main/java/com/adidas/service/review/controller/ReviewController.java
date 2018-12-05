@@ -55,9 +55,11 @@ public class ReviewController {
 		@ApiResponse(code = 401, message = "You are not authorized to delete a review")
 	})
 	@DeleteMapping(path = "/{productId}")
-	public void deleteReview(@PathVariable String productId) {
+	public boolean deleteReview(@PathVariable String productId) {
 		jmsTemplate.convertAndSend(
 			ActiveMQConfig.DELETE_REVIEW_QUEUE, productId);
+
+		return true;
 	}
 
 	@ApiOperation(value = "Retrieve a review by product ID")
