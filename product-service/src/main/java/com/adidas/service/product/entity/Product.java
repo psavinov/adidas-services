@@ -85,6 +85,12 @@ public class Product {
 			ProductKeys.product_link_list, new ArrayList<>());
 	}
 
+	@ApiModelProperty(name = "product_cards", value = "List of product cards")
+	public List<Map<String, String>> getProductCards() {
+		return (List<Map<String, String>>) map.getOrDefault(
+			ProductKeys.product_cards, new ArrayList<>());
+	}
+
 	@ApiModelProperty(name = "breadcrumb_list", value = "List of product breadcrumbs")
 	public List<Map<String, String>> getBreadcrumbList() {
 		return (List<Map<String, String>>) map.getOrDefault(
